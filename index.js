@@ -12,12 +12,16 @@ client.on('voiceStateUpdate', (oldState, newState) => {
 
   // user joined voice, add role
   if (!oldState.channelID && newState.channelID) {
+    let time = new Date();
+    console.log(`${time.toISOString()}: ${member.user.username}#${member.user.discriminator} (${member.nickname }) connected.`);
     member.roles.add(role).catch(console.error);
     return;
   }
   
   // user left voice, remove role
   if (oldState.channelID && !newState.channelID) {
+    let time = new Date();
+    console.log(`${time.toISOString()}: ${member.user.username}#${member.user.discriminator} (${member.nickname }) disconnected.`);
     member.roles.remove(role).catch(console.error);
     return;
   } 
