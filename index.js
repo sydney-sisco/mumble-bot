@@ -7,18 +7,18 @@ client.on('ready', () => {
 });
 
 client.on('voiceStateUpdate', (oldState, newState) => {
-  console.log('voiceStateUpdate old:', oldState);
-  console.log('voiceStateUpdate new:', newState);
+  let role = oldState.guild.roles.cache.find(role => role.name === process.env.ROLE_NAME);
+  let member = oldState.member;
 
+  // user joiced voice, add role
   if (!oldState.channelID && newState.channelID) {
-    // add role
-    // process.env.MUMBLE_ROLE_ID
+    member.roles.add(role).catch(console.error);
     return;
   }
-
+  
+  // user left voice, remove role
   if (oldState.channelID && !newState.channelID) {
-    // remove role
-
+    member.roles.remove(role).catch(console.error);
     return;
   } 
 
