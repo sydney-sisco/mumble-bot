@@ -10,7 +10,7 @@ client.on('voiceStateUpdate', (oldState, newState) => {
   let role = oldState.guild.roles.cache.find(role => role.name === process.env.ROLE_NAME);
   let member = oldState.member;
 
-  // user joiced voice, add role
+  // user joined voice, add role
   if (!oldState.channelID && newState.channelID) {
     member.roles.add(role).catch(console.error);
     return;
