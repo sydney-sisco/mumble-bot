@@ -39,6 +39,12 @@ client.on('message', async message => {
 
   if (message.content.startsWith(PREFIX)) {
     const channel = message.channel; // TextChannel object
+
+    // don't clear messages in other channels
+    if (channel.id !== process.env.CHANNEL_ID) {
+      return;
+    }
+
     const messageManager = channel.messages; // MessageManager object
 
     messageManager.fetch({ limit: 100 }).then((messages) => {
@@ -47,8 +53,9 @@ client.on('message', async message => {
         message.delete();
       });
 
-      channel.send("100 messages have been deleted!");
-    });
+      
+    })
+      .then(() => { channel.send("100 messages have been deleted!"); });
   }
 });
 
