@@ -2,7 +2,7 @@ require('dotenv').config()
 const Discord = require("discord.js");
 const client = new Discord.Client();
 
-const PREFIX = "!m";
+const PREFIX = "!clear";
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -32,8 +32,6 @@ client.on('voiceStateUpdate', (oldState, newState) => {
 });
 
 client.on('message', async message => {
-
-  console.log('message received');
   // ignore messages sent by bots
   if (message.author.bot) {
     return;
@@ -53,5 +51,23 @@ client.on('message', async message => {
     });
   }
 });
+
+// this code will run when the bot starts and delete all messages in the channel
+// client.on('ready', () => {
+//   client.channels.fetch(process.env.CHANNEL_ID)
+//     .then(channel => {
+//       console.log(channel.name)
+//       const messageManager = channel.messages; // MessageManager object
+
+//       messageManager.fetch({ limit: 100 }).then((messages) => {
+//         // `messages` is a Collection of Message objects
+//         messages.forEach((message) => {
+//           message.delete();
+//         });
+
+//         channel.send("100 messages have been deleted!");
+//       });
+//     });
+// });
 
 client.login(process.env.DISCORD_BOT_TOKEN);
