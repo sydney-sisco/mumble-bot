@@ -7,4 +7,6 @@ A quick little Discord bot that adds a Role to all users active in a voice chann
 
 ## Development
 
-`node index.js`
+to start: `npm start`
+
+The bot requires `MESSAGE CONTENT INTENT` currently in order to respond to chat commands. This could be replaced with a slash command instead.

@@ -1,6 +1,14 @@
 require('dotenv').config()
-const Discord = require("discord.js");
-const client = new Discord.Client();
+const { Client, GatewayIntentBits, Partials } = require('discord.js');
+
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildVoiceStates,
+  ],
+});
 
 const PREFIX = "!clear";
 
@@ -13,7 +21,7 @@ client.on('voiceStateUpdate', (oldState, newState) => {
   let member = oldState.member;
 
   // user joined voice, add role
-  if (!oldState.channelID && newState.channelID) {
+  if (!oldState.channelId && newState.channelId) {
     let time = new Date();
     console.log(`${time.toISOString()}: ${member.user.username}#${member.user.discriminator} (${member.nickname }) connected.`);
     member.roles.add(role).catch(console.error);
@@ -21,17 +29,15 @@ client.on('voiceStateUpdate', (oldState, newState) => {
   }
   
   // user left voice, remove role
-  if (oldState.channelID && !newState.channelID) {
+  if (oldState.channelId && !newState.channelId) {
     let time = new Date();
     console.log(`${time.toISOString()}: ${member.user.username}#${member.user.discriminator} (${member.nickname }) disconnected.`);
     member.roles.remove(role).catch(console.error);
     return;
-  } 
-
-  
+  }
 });
 
-client.on('message', async message => {
+client.on('messageCreate', async message => {
   // ignore messages sent by bots
   if (message.author.bot) {
     return;
@@ -58,23 +64,5 @@ client.on('message', async message => {
       .then(() => { channel.send("100 messages have been deleted!"); });
   }
 });
-
-// this code will run when the bot starts and delete all messages in the channel
-// client.on('ready', () => {
-//   client.channels.fetch(process.env.CHANNEL_ID)
-//     .then(channel => {
-//       console.log(channel.name)
-//       const messageManager = channel.messages; // MessageManager object
-
-//       messageManager.fetch({ limit: 100 }).then((messages) => {
-//         // `messages` is a Collection of Message objects
-//         messages.forEach((message) => {
-//           message.delete();
-//         });
-
-//         channel.send("100 messages have been deleted!");
-//       });
-//     });
-// });
 
 client.login(process.env.DISCORD_BOT_TOKEN);
